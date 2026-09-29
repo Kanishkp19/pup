@@ -1,0 +1,55 @@
+name: Release
+
+# Build + bundle installers for macOS and Windows and attach them to a GitHub Release.
+# Trigger: push a version tag, e.g.  git tag v0.1.0 && git push origin v0.1.0
+# Also runnable manually from the Actions tab (workflow_dispatch).
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # needed to create the draft release and upload artifacts
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: "--target universal-apple-darwin"
+          - platform: windows-latest
+            args: ""
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build the app (Tauri action)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "PUPPY ${{ github.ref_name }}"
+          releaseBody: "Installers for PUPPY, the desktop puppy. Download the file for your OS: PUPPY_x64-setup.exe (Windows) or PUPPY_aarch64.dmg / PUPPY_x64.dmg (macOS)."
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
