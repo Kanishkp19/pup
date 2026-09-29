@@ -72,6 +72,10 @@ export class PointerTracker {
     });
   }
 
+  public getLastPointerPos(): { x: number; y: number } {
+    return { ...this.currentPointerPos };
+  }
+
   public pollEvents(): PointerEvents {
     const now = performance.now();
     const pettingActive = this.recognizer.isPettingActive(now);

@@ -13,7 +13,8 @@ export type SoundId =
   | "yawn"
   | "whimper"
   | "pop"
-  | "thud";
+  | "thud"
+  | "snore";
 
 export type Personality = "happy" | "lazy" | "chaotic" | "affectionate" | "chill";
 
@@ -40,7 +41,14 @@ export type BehaviorState =
   | "SLEEPING"
   | "WAKING"
   | "DRAGGED"
-  | "FALLING";
+  | "FALLING"
+  | "ATTENTION"
+  | "TV_WATCH"
+  | "TV_LAUGH"
+  | "BALL_POUNCE"
+  | "DANCE"
+  | "CHASE_TAIL"
+  | "HUNGRY";
 
 export interface CursorInfo {
   x: number; // window-local logical px, smoothed
@@ -81,6 +89,7 @@ export interface UserPresence {
 
 export interface MoveIntent {
   targetX: number; // physical
+  targetY?: number; // physical; omit to stay level with the current position
   speed: number; // logical px/s
 }
 
@@ -91,7 +100,10 @@ export type FxSpawn =
   | { kind: "exclaim" }
   | { kind: "question" }
   | { kind: "dizzy" }
-  | { kind: "dust" };
+  | { kind: "dust" }
+  | { kind: "laugh" }
+  | { kind: "ball"; x: number }  // window-local logical px of the ball spawn
+  | { kind: "note" };
 
 export interface SoundCue {
   id: SoundId;

@@ -65,8 +65,54 @@ export class BehaviorEngine {
     return this.needs;
   }
 
+  /** Context menu / tray: put the pet to sleep immediately. */
+  public forceSleep() {
+    if (this.state !== "SLEEPING") {
+      this.transitionTo("SLEEPING");
+    }
+  }
+
+  /** Context menu / tray: wake the pet up immediately. */
+  public forceWake() {
+    if (this.state === "SLEEPING") {
+      this.isWokenByReturned = false;
+      this.transitionTo("WAKING");
+    }
+  }
+
+  /** Called when the Rust motion thread reports the walk target was reached. */
+  public notifyArrived() {
+    if (this.state === "WANDER" && this.subStep === 1) {
+      // Jump ahead to the post-walk rest step
+      this.subStep = 2;
+      this.stateTimerMs = 0;
+    } else if (this.state === "CHASING_CURSOR") {
+      this.transitionTo("PAW_REACH");
+    }
+  }
+
+  /** Called when the Rust motion thread reports a drag-drop landing. */
+  public notifyLanded() {
+    if (this.state === "FALLING") {
+      this.transitionTo("IDLE");
+    }
+  }
+
   public update(dtSeconds: number, inputs: EngineInputs): EngineOutputs {
     const now = this.clock.now();
+
+    // Defensive: never allow an invalid state to wedge the machine.
+    const VALID_STATES: BehaviorState[] = [
+      "IDLE", "WANDER", "CURIOUS", "CHASING_CURSOR", "PAW_REACH", "PETTING",
+      "KISSING", "HAPPY", "EXCITED", "SURPRISED", "SCARED", "SAD", "BORED",
+      "FUNNY_YAWN", "FUNNY_SCRATCH", "FUNNY_STRETCH", "FUNNY_SNEEZE",
+      "FUNNY_ROLL", "FUNNY_BARK", "SLEEPING", "WAKING", "DRAGGED", "FALLING",
+      "ATTENTION", "TV_WATCH", "TV_LAUGH", "BALL_POUNCE", "DANCE",
+      "CHASE_TAIL", "HUNGRY",
+    ];
+    if (!VALID_STATES.includes(this.state)) {
+      this.transitionTo("IDLE");
+    }
     const dtMs = dtSeconds * 1000;
     this.stateTimerMs += dtMs;
     this.settings = inputs.settings;
@@ -86,6 +132,12 @@ export class BehaviorEngine {
     } else if (this.state === "DRAGGED") {
       if (inputs.pointer.dragEnd) {
         this.transitionTo("FALLING");
+      }
+    } else if (this.state === "FALLING") {
+      // The Rust motion thread emits pet://landed (notifyLanded); but if that
+      // event is ever missed, release the pet after a beat so it never wedges.
+      if (this.stateTimerMs > 600) {
+        this.transitionTo("IDLE");
       }
     }
 
@@ -146,10 +198,10 @@ export class BehaviorEngine {
       }
     }
 
-    // 3. Cursor chase trigger
-    if (this.state === "IDLE" && this.settings.cursorInteraction && inputs.cursor && inputs.cursor.speed > 900 && inputs.cursor.distance < 500) {
+    // 3. Cursor chase trigger (eager: any brisk approach within reach)
+    if (this.state === "IDLE" && this.settings.cursorInteraction && inputs.cursor && inputs.cursor.speed > 350 && inputs.cursor.distance < 420 * inputs.stage.scale) {
       if (this.needs.isOffCooldown("chase", now)) {
-        this.needs.setCooldown("chase", 20, this.settings.personality, now);
+        this.needs.setCooldown("chase", 20 * prof.cooldownScale, this.settings.personality, now);
         this.transitionTo("CHASING_CURSOR");
         sound.push({ id: "yip" });
       }
@@ -187,7 +239,7 @@ export class BehaviorEngine {
         }
 
         if (this.stateTimerMs >= this.stateDurationMs) {
-          this.pickNextIdleState(now, prof);
+          this.pickNextIdleState(now, prof, inputs.stage.window.x);
         }
         break;
       }
@@ -208,6 +260,8 @@ export class BehaviorEngine {
           const isRun = this.settings.personality === "chaotic" && this.rng.chance(0.15);
           anim = isRun ? "run" : "walk";
           const speed = isRun ? 260 : 70;
+          // Walk horizontally, level with wherever the pet currently is
+          // (it may be mid-screen after a drop — do not snap it to the bottom).
           moveIntent = { targetX: this.wanderTargetX, speed };
 
           const distRemaining = Math.abs(this.wanderTargetX - inputs.stage.window.x);
@@ -235,7 +289,11 @@ export class BehaviorEngine {
         if (inputs.cursor) {
           this.facing = inputs.cursor.x > 128 ? "right" : "left";
           anim = "run";
-          moveIntent = { targetX: inputs.cursor.x, speed: 260 };
+          // cursor.x is window-LOCAL logical px — convert to a screen-space
+          // physical target so the pet actually chases toward the cursor.
+          const cursorScreenX =
+            inputs.stage.window.x + inputs.cursor.x * inputs.stage.scaleFactor;
+          moveIntent = { targetX: cursorScreenX, speed: 260 };
 
           // Trip chance
           if (!this.settings.reduceMotion && this.needs.isOffCooldown("trip", now) && this.rng.chance(0.01)) {
@@ -371,6 +429,10 @@ export class BehaviorEngine {
         if (Math.floor(this.stateTimerMs / 1400) > Math.floor((this.stateTimerMs - dtMs) / 1400)) {
           fx.push({ kind: "zzz" });
         }
+        // Snore: gentle saw-wave breath sound every ~4 s (60% of cycles)
+        if (!this.settings.reduceMotion && Math.floor(this.stateTimerMs / 4200) > Math.floor((this.stateTimerMs - dtMs) / 4200) && this.rng.chance(0.6)) {
+          sound.push({ id: "snore", volumeScale: 0.35 });
+        }
         break;
       }
 
@@ -385,6 +447,113 @@ export class BehaviorEngine {
           } else {
             this.transitionTo("IDLE");
           }
+        }
+        break;
+      }
+
+      case "ATTENTION": {
+        // Attention-seeking: bark + paw reach until noticed (petted/clicked/kissed)
+        anim = this.stateTimerMs % 2000 < 1000 ? "bark" : "paw_reach";
+        if (this.stateTimerMs > 400 && Math.floor(this.stateTimerMs / 1400) > Math.floor((this.stateTimerMs - dtMs) / 1400)) {
+          sound.push({ id: "bark", volumeScale: 0.9 });
+          bubble = { text: ["Woof!", "Hey!", "Play with me?", "Pet me? 🥺"][Math.floor(this.rng.nextFloat(0, 4))] || "Woof!", durationMs: 1600 };
+        }
+        if (inputs.pointer.pettingActive || inputs.pointer.clicks.length > 0 || inputs.pointer.doubleClick) {
+          this.needs.onInteract("click", this.settings.personality, now);
+          this.needs.setCooldown("attention", 240, this.settings.personality, now);
+          this.transitionTo("HAPPY");
+        } else if (this.stateTimerMs >= 6000) {
+          this.needs.setCooldown("attention", 180, this.settings.personality, now);
+          this.transitionTo("SAD");
+        }
+        break;
+      }
+
+      case "TV_WATCH": {
+        anim = "tv_watch";
+        if (this.stateTimerMs > 3000 && this.rng.chance(0.35)) {
+          this.transitionTo("TV_LAUGH");
+        } else if (this.stateTimerMs >= 9000) {
+          this.transitionTo("IDLE");
+        }
+        break;
+      }
+
+      case "TV_LAUGH": {
+        anim = "tv_laugh";
+        if (Math.floor(this.stateTimerMs / 700) > Math.floor((this.stateTimerMs - dtMs) / 700)) {
+          fx.push({ kind: "laugh" });
+        }
+        if (this.stateTimerMs >= 3500) {
+          this.transitionTo("TV_WATCH");
+        }
+        break;
+      }
+
+      case "BALL_POUNCE": {
+        // pounce loop toward the ball: run at it, then pounce; ends happy
+        if (this.subStep === 0) {
+          anim = "run";
+          this.facing = this.wanderTargetX >= inputs.stage.window.x ? "right" : "left";
+          // draw the ball at its landing spot (window-local): target minus window x
+          if (this.stateTimerMs < 50) {
+            fx.push({ kind: "ball", x: 128 + (this.wanderTargetX - inputs.stage.window.x) });
+          }
+          moveIntent = { targetX: this.wanderTargetX, speed: 240 };
+          if (Math.abs(this.wanderTargetX - inputs.stage.window.x) < 80 || this.stateTimerMs > 2500) {
+            this.subStep = 1;
+            this.stateTimerMs = 0;
+            moveIntent = null;
+          }
+        } else {
+          anim = "ball_pounce";
+          if (this.subStep === 1 && this.stateTimerMs >= 600) {
+            this.subStep = 2;
+            sound.push({ id: "pop" });
+            fx.push({ kind: "sparkles", count: 6 });
+            // punt the ball away on impact
+            fx.push({ kind: "ball", x: 128 + (this.wanderTargetX - inputs.stage.window.x) });
+          }
+          if (this.stateTimerMs >= 1300) {
+            this.needs.onInteract("play", this.settings.personality, now);
+            this.transitionTo("HAPPY");
+          }
+        }
+        break;
+      }
+
+      case "DANCE": {
+        anim = "dance";
+        if (Math.floor(this.stateTimerMs / 1000) > Math.floor((this.stateTimerMs - dtMs) / 1000)) {
+          fx.push({ kind: "note" });
+        }
+        if (this.stateTimerMs >= 3600) {
+          this.transitionTo("HAPPY");
+        }
+        break;
+      }
+
+      case "CHASE_TAIL": {
+        anim = "chase_tail";
+        if (this.stateTimerMs >= 3200) {
+          fx.push({ kind: "dizzy" });
+          this.transitionTo("IDLE");
+        }
+        break;
+      }
+
+      case "HUNGRY": {
+        anim = "hungry";
+        if (this.stateTimerMs % 2400 < dtMs) {
+          bubble = { text: "🐶 hungry…", durationMs: 1800 };
+          sound.push({ id: "whimper", volumeScale: 0.7 });
+        }
+        if (inputs.pointer.clicks.length > 0 || inputs.pointer.pettingActive) {
+          this.needs.onInteract("feed", this.settings.personality, now);
+          fx.push({ kind: "hearts", count: 4 });
+          this.transitionTo("HAPPY");
+        } else if (this.stateTimerMs >= 5000) {
+          this.transitionTo("IDLE");
         }
         break;
       }
@@ -436,12 +605,14 @@ export class BehaviorEngine {
     }
   }
 
-  private pickNextIdleState(now: number, prof: { wander: number; funny: number; sleep: number }) {
+  private pickNextIdleState(now: number, prof: { wander: number; funny: number; sleep: number; chase: number; reaction: number }, stageX: number) {
     this.stateDurationMs = this.rng.nextFloat(4000, 12000);
 
-    const weights = [
-      { item: "IDLE" as BehaviorState, weight: 30 },
-      { item: "WANDER" as BehaviorState, weight: this.settings.miniMode ? 0 : 30 * prof.wander },
+    const ignoredMs = now - this.needs.lastInteractionAt;
+    const weights: { item: BehaviorState | "FUNNY" | "PLAY"; weight: number }[] = [
+      { item: "IDLE", weight: 14 },
+      // Roaming is the pet's signature behaviour — make it clearly dominant
+      { item: "WANDER", weight: this.settings.miniMode ? 0 : 46 * prof.wander },
       {
         item: "SLEEPING" as BehaviorState,
         weight: this.needs.energy < 40 ? Math.max(0, 60 - this.needs.energy) * prof.sleep : 0,
@@ -449,6 +620,33 @@ export class BehaviorEngine {
       {
         item: "BORED" as BehaviorState,
         weight: this.needs.boredom > 60 && this.needs.isOffCooldown("bored", now) ? Math.max(0, this.needs.boredom - 50) : 0,
+      },
+      // Attention-seeking: ignored for 2+ minutes and off cooldown
+      {
+        item: "ATTENTION" as BehaviorState,
+        weight:
+          ignoredMs > 120_000 && this.needs.isOffCooldown("attention", now)
+            ? 18 * prof.reaction
+            : 0,
+      },
+      // Hungry: low energy but not sleepy yet
+      {
+        item: "HUNGRY" as BehaviorState,
+        weight:
+          this.needs.energy < 45 && this.needs.isOffCooldown("hungry", now) ? 12 : 0,
+      },
+      // TV time (V2 feature, art exists): watching TV when you're around but busy
+      {
+        item: "TV_WATCH" as BehaviorState,
+        weight: !this.settings.miniMode && this.needs.isOffCooldown("tv", now) ? 10 : 0,
+      },
+      // PLAY bundle: ball pounce, dance, chase tail
+      {
+        item: "PLAY" as const,
+        weight:
+          !this.settings.miniMode && this.needs.boredom > 35 && this.needs.isOffCooldown("play_global", now)
+            ? 22 * prof.funny
+            : 0,
       },
       {
         item: "FUNNY" as const,
@@ -478,10 +676,42 @@ export class BehaviorEngine {
       }
     }
 
+    if (pick === "PLAY") {
+      const plays: { item: BehaviorState; key: string; cdSec: number }[] = [
+        { item: "BALL_POUNCE", key: "ball", cdSec: 120 },
+        { item: "DANCE", key: "dance", cdSec: 150 },
+        { item: "CHASE_TAIL", key: "chase_tail", cdSec: 180 },
+      ];
+      const available = plays.filter((p) => this.needs.isOffCooldown(p.key, now));
+      if (available.length > 0) {
+        this.needs.setCooldown("play_global", 40, this.settings.personality, now);
+        const chosen = this.rng.pick(available);
+        this.needs.setCooldown(chosen.key, chosen.cdSec, this.settings.personality, now);
+        if (chosen.item === "BALL_POUNCE") {
+          // spawn the ball 150–400 px away, in a random direction
+          const dist = this.rng.nextFloat(150, 400);
+          const dir = this.rng.chance(0.5) ? 1 : -1;
+          this.wanderTargetX = stageX + dist * dir;
+          this.subStep = 0;
+        }
+        this.transitionTo(chosen.item);
+        return;
+      }
+      // all plays on cooldown → just stay idle this round
+      this.stateTimerMs = 0;
+      return;
+    }
+
+    if (pick === "TV_WATCH") {
+      this.needs.setCooldown("tv", 200, this.settings.personality, now);
+      this.transitionTo("TV_WATCH");
+      return;
+    }
+
     if (pick === "IDLE" || pick === "FUNNY") {
       this.stateTimerMs = 0; // stay idle for another period
     } else {
-      this.transitionTo(pick);
+      this.transitionTo(pick as BehaviorState);
     }
   }
 }

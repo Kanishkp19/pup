@@ -6,6 +6,7 @@ import { DustParticle, ExclamationParticle, QuestionParticle } from "./fx/emotes
 import { spawnKissHearts, spawnPettingBurst } from "./fx/hearts";
 import { ParticlePool } from "./fx/particles";
 import { ZzzParticle } from "./fx/zzz";
+import { BallParticle, LaughParticle, NoteParticle } from "./fx/play";
 import { CursorProcessor } from "./input/cursor";
 import { PointerTracker } from "./input/pointer";
 import { ipc } from "./ipc";
@@ -28,6 +29,11 @@ export class PuppyApp {
   private settings!: Settings;
   private stage!: Stage;
   private lastCursorPayload: CursorTickPayload | null = null;
+  private lastCursorPos: { x: number; y: number } = { x: 0, y: 0 };
+  private stillMs: number = 0;
+  private lastMoveTime: number = performance.now();
+  private presenceReturned: boolean = false;
+  private lastDustTime: number = 0;
   private lastTickTime: number = performance.now();
   private lastSavedTime: number = performance.now();
   private isRunning: boolean = false;
@@ -92,13 +98,42 @@ export class PuppyApp {
 
     // Listen to settings changes
     await ipc.onSettingsChanged((newSettings) => {
+      const scaleChanged = newSettings.scale !== this.settings?.scale || newSettings.miniMode !== this.settings?.miniMode;
       this.settings = newSettings;
       this.audioManager.setMasterVolume(newSettings.volume);
       this.audioManager.setMuted(!newSettings.soundEnabled);
+
+      // Mini mode: 0.5x window (PRD F12) — applied through the same scale path
+      if (scaleChanged) {
+        void this.applyScale();
+      }
     });
 
-    // Set initial hitbox on pet body (window-local logical px)
-    void ipc.setHitbox({ x: 60, y: 100, width: 136, height: 145 });
+    // Context / tray menu actions
+    await ipc.onMenuAction((action) => this.handleMenuAction(action));
+
+    // Motion feedback from the Rust motion thread
+    await ipc.onArrived(() => {
+      this.engine.notifyArrived();
+    });
+    await ipc.onLanded(() => {
+      this.engine.notifyLanded();
+      void ipc.getStage().then((stage) => {
+        this.stage = stage;
+      });
+    });
+
+    // Keep stage fresh while the window walks / falls / gets dragged, so
+    // wander targets and cursor math use the live window position.
+    await ipc.onMoved(() => {
+      void ipc.getStage().then((stage) => {
+        this.stage = stage;
+      });
+    });
+
+    // Hitbox covering the real sprite content (window-local logical px):
+    // measured content spans x 60..196, y 92..242 at 1.0 scale.
+    void ipc.setHitbox({ x: 56, y: 88, width: 144, height: 160 });
 
     // Say first run greeting if not done
     if (!this.settings.firstRunDone) {
@@ -108,7 +143,21 @@ export class PuppyApp {
 
     this.isRunning = true;
     this.lastTickTime = performance.now();
+
+    // Apply persisted scale (and mini-mode) once at startup
+    await this.applyScale();
+
     this.loop();
+  }
+
+  /** Push the effective window scale (user scale × mini-mode 0.5×) to Rust. */
+  private async applyScale(): Promise<void> {
+    const effective = this.settings.miniMode ? this.settings.scale * 0.5 : this.settings.scale;
+    await ipc.setWindowScale(effective);
+    // Re-show in case a scale change raced with the window state, and refresh
+    void ipc.getStage().then((stage) => {
+      this.stage = stage;
+    });
   }
 
   private loop = () => {
@@ -144,7 +193,8 @@ export class PuppyApp {
     const stageInfo: StageInfo = {
       scale: this.settings.scale,
       scaleFactor: this.stage.scaleFactor,
-      ground: true,
+      // "on ground" = window bottom is resting at the ground line (physical px)
+      ground: Math.abs(this.stage.window.y - this.stage.groundY) < 4,
       nearTopEdge: this.stage.window.y < 30,
       window: this.stage.window,
     };
@@ -153,10 +203,15 @@ export class PuppyApp {
     const outputs = this.engine.update(dtSec, {
       cursor: cursorInfo,
       pointer: pointerEvents,
-      presence: { stillMs: 0, returned: false, systemResumed: false },
+      presence: {
+        stillMs: this.stillMs,
+        returned: this.presenceReturned,
+        systemResumed: false,
+      },
       stage: stageInfo,
       settings: this.settings,
     });
+    this.presenceReturned = false;
 
     // Apply animation & facing
     this.animator.play(outputs.animation);
@@ -192,9 +247,46 @@ export class PuppyApp {
       (ctx) => this.speechBubble.draw(ctx, this.settings.scale, stageInfo.nearTopEdge)
     );
 
-    // Handle movement
+    // Handle movement (Rust walks the window; re-issue while the engine wants motion)
     if (outputs.moveIntent) {
-      void ipc.moveTo(outputs.moveIntent.targetX, outputs.moveIntent.speed);
+      void ipc.moveTo(outputs.moveIntent.targetX, outputs.moveIntent.speed, outputs.moveIntent.targetY);
+      // occasional dust puffs while trotting
+      if (now - this.lastDustTime > 400) {
+        this.lastDustTime = now;
+        const dir = outputs.facing === "right" ? -1 : 1;
+        this.particlePool.spawn(new DustParticle(128 + dir * 30, dir));
+      }
+    }
+
+    // Drag start/end -> Rust owns the window while grabbed
+    if (pointerEvents.dragStart) {
+      const grab = this.pointerTracker.getLastPointerPos();
+      void ipc.beginDrag(grab.x, grab.y);
+    }
+    if (pointerEvents.dragEnd) {
+      void ipc.endDrag();
+    }
+
+    // Right-click -> native context menu
+    if (pointerEvents.rightClick) {
+      void ipc.showContextMenu();
+    }
+
+    // Track user presence (stillness / return) for the sleep system
+    if (this.lastCursorPayload) {
+      const moved =
+        this.lastCursorPayload.x !== this.lastCursorPos.x ||
+        this.lastCursorPayload.y !== this.lastCursorPos.y;
+      if (moved) {
+        this.lastCursorPos = { x: this.lastCursorPayload.x, y: this.lastCursorPayload.y };
+        this.stillMs = 0;
+        if (now - this.lastMoveTime > 30000 && this.settings.wakeOnReturn) {
+          this.presenceReturned = true;
+        }
+        this.lastMoveTime = now;
+      } else {
+        this.stillMs += dtMs;
+      }
     }
 
     // Debounced state save (every 30 seconds)
@@ -202,6 +294,47 @@ export class PuppyApp {
       this.lastSavedTime = now;
       const state = this.engine.getNeeds().toState(Date.now());
       void ipc.savePetState(state);
+    }
+  }
+
+  private handleMenuAction(action: string) {
+    switch (action) {
+      case "sleep":
+        this.engine.forceSleep();
+        break;
+      case "wake":
+        this.engine.forceWake();
+        break;
+      case "sleep_toggle": {
+        // Context menu uses a single toggle item labelled by current state.
+        if (this.engine.getState() === "SLEEPING") {
+          this.engine.forceWake();
+        } else {
+          this.engine.forceSleep();
+        }
+        break;
+      }
+      case "mini":
+        this.settings.miniMode = !this.settings.miniMode;
+        void ipc.updateSettings({ miniMode: this.settings.miniMode });
+        break;
+      case "mute":
+        this.settings.soundEnabled = !this.settings.soundEnabled;
+        this.audioManager.setMuted(!this.settings.soundEnabled);
+        void ipc.updateSettings({ soundEnabled: this.settings.soundEnabled });
+        break;
+      case "hide":
+        void ipc.hidePet();
+        break;
+      case "show":
+        void ipc.showPet();
+        break;
+      case "settings":
+        // Rust opens the settings window directly
+        break;
+      case "quit":
+        // Rust exits directly
+        break;
     }
   }
 
@@ -225,6 +358,12 @@ export class PuppyApp {
     } else if (fx.kind === "dust") {
       this.particlePool.spawn(new DustParticle(128, 1));
       this.particlePool.spawn(new DustParticle(128, -1));
+    } else if (fx.kind === "laugh") {
+      this.particlePool.spawn(new LaughParticle(150, 110, Math.floor(Math.random() * 6)));
+    } else if (fx.kind === "note") {
+      this.particlePool.spawn(new NoteParticle(150, 110, Math.floor(Math.random() * 6)));
+    } else if (fx.kind === "ball") {
+      this.particlePool.spawn(new BallParticle(fx.x));
     }
   }
 }

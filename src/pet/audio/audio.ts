@@ -17,6 +17,7 @@ const SOUND_MANIFEST: Record<SoundId, SoundMeta> = {
   whimper: { cooldownMs: 10000, volume: 0.5 },
   pop: { cooldownMs: 200, volume: 0.6 },
   thud: { cooldownMs: 500, volume: 0.9 },
+  snore: { cooldownMs: 4000, volume: 0.4 },
 };
 
 export class AudioManager {

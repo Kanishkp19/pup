@@ -2,6 +2,8 @@ pub mod commands;
 pub mod cursor;
 pub mod generated_consts;
 pub mod kinematics;
+pub mod motion;
+pub mod persist;
 pub mod settings;
 pub mod shortcuts;
 pub mod state;
@@ -12,9 +14,10 @@ use std::sync::Arc;
 use tauri_plugin_autostart::MacosLauncher;
 
 pub fn run() {
-    let app_state = commands::AppState::new();
+    let app_state = Arc::new(commands::AppState::new());
     let window_mgr = Arc::clone(&app_state.window_manager);
     let cursor_tracker = Arc::clone(&app_state.cursor_tracker);
+    let motion_state = Arc::clone(&app_state);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
@@ -32,7 +35,54 @@ pub fn run() {
             }
 
             let handle = app.handle().clone();
-            cursor_tracker.start(handle, window_mgr);
+            commands::hydrate_from_disk(&handle, &motion_state);
+
+            // A manual launch is an explicit request to see the pet: if a past
+            // session persisted `visible: false`, un-hide it now (and persist
+            // the correction) so the app never boots into an empty screen.
+            {
+                use tauri::Manager;
+                let st = motion_state.settings.read().clone();
+                if !st.visible {
+                    if let Some(w) = handle.get_webview_window("pet") {
+                        let _ = w.show();
+                    }
+                    motion_state.settings.write().visible = true;
+                    persist::save_settings(&handle, &motion_state.settings.read().clone());
+                }
+                if st.mini_mode {
+                    // apply mini scale right away so the size is correct on boot
+                    if let Some(w) = handle.get_webview_window("pet") {
+                        let _ = window_mgr.set_scale(&w, st.scale * 0.5);
+                    }
+                } else {
+                    if let Some(w) = handle.get_webview_window("pet") {
+                        let _ = window_mgr.set_scale(&w, st.scale);
+                    }
+                }
+            }
+
+            cursor_tracker.start(handle.clone(), window_mgr);
+
+            // ONE global menu-event listener for context menu + tray menu.
+            // Handles: sleep/wake toggle, mini, mute, hide, settings, quit.
+            {
+                use tauri::Emitter;
+                handle.on_menu_event(move |app_handle, event| {
+                    let action = event.id().as_ref().to_string();
+                    match action.as_str() {
+                        "quit" => app_handle.exit(0),
+                        "settings" => commands::open_settings_window(app_handle),
+                        "sleep" | "wake" | "mini" | "mute" | "hide" | "show" => {
+                            let _ = app_handle.emit("menu://action", serde_json::json!({ "action": action }));
+                        }
+                        _ => {}
+                    }
+                });
+            }
+
+            // Window motion: walking, drag-follow, gravity fall
+            motion::start_motion_thread(handle, motion_state);
 
             if let Err(e) = tray::setup_tray(&app.handle()) {
                 log::warn!("Failed to setup tray: {}", e);

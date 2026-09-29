@@ -1,7 +1,7 @@
 use tauri::{
     menu::{MenuBuilder, MenuItemBuilder},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    AppHandle, Emitter, Manager,
+    AppHandle, Emitter,
 };
 
 pub fn setup_tray(app: &AppHandle) -> Result<(), String> {
@@ -27,29 +27,8 @@ pub fn setup_tray(app: &AppHandle) -> Result<(), String> {
     let _tray = TrayIconBuilder::new()
         .menu(&menu)
         .show_menu_on_left_click(false)
-        .on_menu_event(|app, event| {
-            let id = event.id().as_ref();
-            let action = match id {
-                "sleep" => "sleep",
-                "mute" => "mute",
-                "mini" => "mini",
-                "hide" => "hide",
-                "settings" => "settings",
-                "quit" => "quit",
-                _ => return,
-            };
-
-            if action == "quit" {
-                app.exit(0);
-            } else if action == "settings" {
-                if let Some(w) = app.get_webview_window("settings") {
-                    let _ = w.show();
-                    let _ = w.set_focus();
-                }
-            }
-
-            let _ = app.emit("menu://action", serde_json::json!({ "action": action }));
-        })
+        // Menu item clicks are handled by the ONE global listener in lib.rs
+        // (this avoids double-firing and keeps context/tray behavior identical).
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click {
                 button: MouseButton::Left,

@@ -206,5 +206,31 @@ export function playSynthPatch(
       osc.stop(now + 0.12);
       break;
     }
+
+    case "snore": {
+      // Soft whistling inhale: filtered saw sweep 90 -> 60 Hz over 0.5 s
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      osc.type = "sawtooth";
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(300, now);
+      filter.Q.setValueAtTime(8, now);
+
+      osc.frequency.setValueAtTime(90 * pitchFactor, now);
+      osc.frequency.linearRampToValueAtTime(60 * pitchFactor, now + 0.5);
+      filter.frequency.linearRampToValueAtTime(160, now + 0.5);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.5, now + 0.15);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.55);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.6);
+      break;
+    }
   }
 }

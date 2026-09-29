@@ -57,10 +57,10 @@ export class NeedsSystem {
     }
   }
 
-  public onInteract(kind: "click" | "pet" | "kiss", personality: Personality, now: number) {
+  public onInteract(kind: "click" | "pet" | "kiss" | "play" | "feed", personality: Personality, now: number) {
     const prof = PERSONALITY_PROFILES[personality];
     this.lastInteractionAt = now;
-    this.boredom = Math.max(0, this.boredom - 40);
+    this.boredom = Math.max(0, this.boredom - (kind === "play" ? 55 : 40));
 
     if (kind === "click") {
       this.affection = clamp(this.affection + 3 * prof.petGain, 0, 100);
@@ -68,6 +68,11 @@ export class NeedsSystem {
       this.affection = clamp(this.affection + 8 * prof.petGain, 0, 100);
     } else if (kind === "kiss") {
       this.affection = clamp(this.affection + 12 * prof.petGain, 0, 100);
+    } else if (kind === "play") {
+      this.affection = clamp(this.affection + 10 * prof.petGain, 0, 100);
+      this.energy = clamp(this.energy - 3, 0, 100);
+    } else if (kind === "feed") {
+      this.affection = clamp(this.affection + 6 * prof.petGain, 0, 100);
     }
   }
 

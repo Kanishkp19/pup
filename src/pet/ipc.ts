@@ -124,10 +124,10 @@ export const ipc = {
     }
   },
 
-  async moveTo(x: number, speed: number): Promise<void> {
+  async moveTo(x: number, speed: number, y?: number): Promise<void> {
     if (tauriInvoke) {
       try {
-        await tauriInvoke("move_to", { x, speed });
+        await tauriInvoke("move_to", { x, speed, y: y ?? null });
       } catch {}
     }
   },
@@ -173,5 +173,72 @@ export const ipc = {
       } catch {}
     }
     return () => {};
+  },
+
+  async onArrived(callback: (pos: { x: number; y: number }) => void): Promise<() => void> {
+    if (tauriListen) {
+      try {
+        return await tauriListen<{ x: number; y: number }>("pet://arrived", (e) => callback(e.payload));
+      } catch {}
+    }
+    return () => {};
+  },
+
+  async onLanded(callback: (pos: { x: number; y: number }) => void): Promise<() => void> {
+    if (tauriListen) {
+      try {
+        return await tauriListen<{ x: number; y: number }>("pet://landed", (e) => callback(e.payload));
+      } catch {}
+    }
+    return () => {};
+  },
+
+  async onMoved(callback: (pos: { x: number; y: number }) => void): Promise<() => void> {
+    if (tauriListen) {
+      try {
+        return await tauriListen<{ x: number; y: number }>("pet://moved", (e) => callback(e.payload));
+      } catch {}
+    }
+    return () => {};
+  },
+
+  async beginDrag(grabX: number, grabY: number): Promise<void> {
+    if (tauriInvoke) {
+      try {
+        await tauriInvoke("begin_drag", { grabX, grabY });
+      } catch {}
+    }
+  },
+
+  async endDrag(): Promise<void> {
+    if (tauriInvoke) {
+      try {
+        await tauriInvoke("end_drag");
+      } catch {}
+    }
+  },
+
+  async showContextMenu(): Promise<void> {
+    if (tauriInvoke) {
+      try {
+        await tauriInvoke("show_context_menu");
+      } catch {}
+    }
+  },
+
+  async showPet(): Promise<void> {
+    if (tauriInvoke) {
+      try {
+        await tauriInvoke("show_pet");
+      } catch {}
+    }
+  },
+
+  async hidePet(): Promise<void> {
+    if (tauriInvoke) {
+      try {
+        await tauriInvoke("hide_pet");
+      } catch {}
+    }
   },
 };

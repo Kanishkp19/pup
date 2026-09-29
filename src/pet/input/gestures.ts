@@ -1,10 +1,13 @@
 import { dist } from "../../shared/math";
 
-export const FACE_CENTER = { x: 128, y: 165 };
-export const FACE_RADIUS = 28;
+// Zones measured from the real generated sprite (idle_sit):
+// eye/face center in window-logical px is (144, 134); head occupies roughly
+// x 84..196, y 92..158. Radii are generous so petting feels forgiving.
+export const FACE_CENTER = { x: 140, y: 136 };
+export const FACE_RADIUS = 34;
 
-export const HEAD_CENTER = { x: 128, y: 140 };
-export const HEAD_RADIUS = 48;
+export const HEAD_CENTER = { x: 140, y: 128 };
+export const HEAD_RADIUS = 58;
 
 export function isInFaceZone(x: number, y: number): boolean {
   return dist(x, y, FACE_CENTER.x, FACE_CENTER.y) <= FACE_RADIUS;
@@ -15,8 +18,9 @@ export function isInHeadZone(x: number, y: number): boolean {
 }
 
 export function isInBodyZone(x: number, y: number): boolean {
-  const dx = (x - 128) / 50;
-  const dy = (y - 200) / 45;
+  // torso center of the real sprite (window-logical), generous ellipse
+  const dx = (x - 138) / 62;
+  const dy = (y - 190) / 60;
   return dx * dx + dy * dy <= 1.0;
 }
 

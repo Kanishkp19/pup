@@ -22,9 +22,11 @@ assets/raw/_model_sheet/
 *.bak
 
 # System & IDE files
+.freebuff/
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
 .vscode/
 .idea/
+

@@ -20,6 +20,7 @@ export class Renderer {
   private ctx: CanvasRenderingContext2D;
   private spriteCache: SpriteCache;
   private animator: Animator;
+  private resizeObserver: ResizeObserver | null = null;
 
   constructor(canvas: HTMLCanvasElement, spriteCache: SpriteCache, animator: Animator) {
     this.canvas = canvas;
@@ -30,6 +31,29 @@ export class Renderer {
     this.ctx.imageSmoothingQuality = "high";
     this.spriteCache = spriteCache;
     this.animator = animator;
+
+    // Keep the backing store in sync with the OS window size: when the window
+    // resizes (mini mode, settings scale), the canvas must resize with it or
+    // the dog gets clipped out of view ("disappears").
+    if (typeof ResizeObserver !== "undefined") {
+      this.resizeObserver = new ResizeObserver(() => this.syncSize());
+      this.resizeObserver.observe(canvas);
+    }
+    window.addEventListener("resize", () => this.syncSize());
+    this.syncSize();
+  }
+
+  /** Match canvas CSS size to backing resolution (256-logical design space). */
+  private syncSize() {
+    const cssW = this.canvas.clientWidth || 256;
+    const cssH = this.canvas.clientHeight || 256;
+    const dpr = window.devicePixelRatio || 1;
+    const bw = Math.max(1, Math.round(cssW * dpr));
+    const bh = Math.max(1, Math.round(cssH * dpr));
+    if (this.canvas.width !== bw || this.canvas.height !== bh) {
+      this.canvas.width = bw;
+      this.canvas.height = bh;
+    }
   }
 
   public render(
@@ -41,7 +65,13 @@ export class Renderer {
     const w = this.canvas.width;
     const h = this.canvas.height;
 
-    ctx.clearRect(0, 0, w, h);
+    // Design space is 256×256 logical; back it with whatever the window is.
+    const design = 256;
+    const sx = w / design;
+    const sy = h / design;
+
+    ctx.setTransform(sx, 0, 0, sy, 0, 0);
+    ctx.clearRect(0, 0, design, design);
 
     // 1. Draw ground shadow
     drawShadow(ctx, Math.max(0, -motion.offsetY));
@@ -65,7 +95,7 @@ export class Renderer {
       ctx.translate(-anchorX, -anchorY);
 
       // Draw primary frame
-      const sx = renderState.frameIndex * CANVAS_PX;
+      const sxFrame = renderState.frameIndex * CANVAS_PX;
       const sy = 0;
       const sw = CANVAS_PX;
       const sh = CANVAS_PX;
@@ -78,7 +108,7 @@ export class Renderer {
       if (renderState.crossfade) {
         ctx.globalAlpha = 1.0 - renderState.crossfade.alpha;
       }
-      ctx.drawImage(stripImg, sx, sy, sw, sh, dx, dy, dw, dh);
+      ctx.drawImage(stripImg, sxFrame, sy, sw, sh, dx, dy, dw, dh);
 
       // Draw crossfade frame if active
       if (renderState.crossfade) {

@@ -13,6 +13,7 @@
     "assets:placeholders": "python3 tools/make_placeholders.py",
     "assets:generate": "python3 tools/nb_generate.py",
     "assets:build": "python3 tools/process_frames.py && python3 tools/pack_strips.py && python3 tools/validate_assets.py",
+    "assets:offline": "python3 tools/build_strips_offline.py",
     "assets:validate": "python3 tools/validate_assets.py",
     "assets:qa": "python3 tools/qa_report.py",
     "tauri": "tauri"

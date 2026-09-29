@@ -30,6 +30,8 @@ pub struct CursorTracker {
     running: AtomicBool,
     consecutive_errors: AtomicU32,
     was_inside: AtomicBool,
+    /// Shared with the cursor thread so hit-testing can be suspended mid-drag.
+    pub dragging: Arc<RwLock<bool>>,
 }
 
 impl CursorTracker {
@@ -39,11 +41,16 @@ impl CursorTracker {
             running: AtomicBool::new(false),
             consecutive_errors: AtomicU32::new(0),
             was_inside: AtomicBool::new(false),
+            dragging: Arc::new(RwLock::new(false)),
         }
     }
 
     pub fn set_mode(&self, new_mode: CursorRateMode) {
         *self.mode.write() = new_mode;
+    }
+
+    pub fn set_dragging(&self, on: bool) {
+        *self.dragging.write() = on;
     }
 
     pub fn start(self: Arc<Self>, app: AppHandle, window_mgr: Arc<WindowManager>) {
@@ -84,12 +91,19 @@ impl CursorTracker {
                             };
                             let _ = app.emit("cursor://tick", payload);
 
-                            // Hit-testing
+                            // Hit-testing (suspended while dragging so the cursor
+                            // can slide off the hitbox without dropping the pet)
                             if let (Ok(win_pos), Ok(scale_factor)) = (window.outer_position(), window.scale_factor()) {
                                 let local_x = (pos.x - win_pos.x as f64) / scale_factor;
                                 let local_y = (pos.y - win_pos.y as f64) / scale_factor;
 
-                                if let Some(hitbox) = window_mgr.get_hitbox() {
+                                let dragging = *self
+                                    .dragging
+                                    .read();
+                                if dragging {
+                                    self.was_inside.store(true, Ordering::Relaxed);
+                                    let _ = window_mgr.set_ignore_cursor_events(&window, false);
+                                } else if let Some(hitbox) = window_mgr.get_hitbox() {
                                     let was_in = self.was_inside.load(Ordering::Relaxed);
                                     let hysteresis = if was_in { 6.0 } else { 0.0 };
 
