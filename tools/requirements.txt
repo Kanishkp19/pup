@@ -1,0 +1,7 @@
+pillow>=10
+numpy
+scikit-image
+google-genai
+python-dotenv
+tqdm
+pytest

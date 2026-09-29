@@ -1,0 +1,15 @@
+# output: assets/raw/stretch/stretch_03.png
+# refs: assets/approved/master/master_side_right.png | assets/approved/master/master_front.png | assets/raw/stretch/stretch_02.png
+# aspect: 1:1
+# size: 1K
+# animation: stretch  frame: 4  of: 5  attempt: 1
+---
+Cute chibi cartoon puppy, game-sprite style. Match the reference character EXACTLY: same face, same eye shape and colour, same ear shape, same fur colours and cream markings, same proportions (large head, tiny paws, big fluffy tail). Soft cel-shading with gentle gradients, clean warm-brown outline of uniform thickness (about 3 px at 384 px), warm pastel palette, no realistic fur texture, no photorealism. Background: flat solid pure green #00FF00 only, no floor, no ground shadow, no gradient, no text, no watermark. One single character, centred, entire body visible with at least 8% empty margin on every side. No green anywhere on the character. No props unless the pose says so.
+
+REFERENCES: image 1 = the character's identity truth for this camera; image 2 = a second identity check;
+image 3 = the previous approved frame of this same animation: keep the identical scale, framing, horizontal centring and feet height.
+
+SHOT: animation "stretch", frame 4 of 5. Pure side view, the character facing the viewer's right.
+POSE: coming up, front legs walking back
+CONTINUITY: Same size, same screen position and same outline thickness as the references. Change ONLY what POSE describes. Do not add props, text, shadows or effects.
+AVOID: realistic dog; photo; 3D render; different breed; different eye colour; extra limbs; text; watermark; ground shadow; green on the character; multiple characters; cropped body

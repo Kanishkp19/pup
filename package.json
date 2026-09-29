@@ -1,0 +1,31 @@
+{
+  "name": "puppy",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "assets:spec": "python3 tools/gen_from_spec.py",
+    "assets:placeholders": "python3 tools/make_placeholders.py",
+    "assets:generate": "python3 tools/nb_generate.py",
+    "assets:build": "python3 tools/process_frames.py && python3 tools/pack_strips.py && python3 tools/validate_assets.py",
+    "assets:validate": "python3 tools/validate_assets.py",
+    "assets:qa": "python3 tools/qa_report.py",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/plugin-autostart": "^2.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.0",
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0"
+  }
+}

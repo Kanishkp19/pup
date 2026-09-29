@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "name": "PUPPY",
+  "default_pet_name": "Biscuit",
+  "identity_source": "assets/reference/master_reference.png (USER PROVIDED - always wins over any text below)",
+  "text_defaults_if_reference_is_silent": {
+    "species": "cute fluffy chibi puppy, cartoon (not realistic)",
+    "fur": "warm golden with cream chest, muzzle and paw tips",
+    "eyes": "large, round, glossy, expressive; copy exact colour and highlight layout from the reference; never change",
+    "ears": "floppy, rounded, slightly darker golden than the body",
+    "nose": "small, rounded, dark brown",
+    "body": "round and fluffy, tiny paws, big fluffy tail; head is about 55% of total body height",
+    "expression_default": "gentle happy closed-mouth smile"
+  },
+  "style_lock": "Cute chibi cartoon puppy, game-sprite style. Match the reference character EXACTLY: same face, same eye shape and colour, same ear shape, same fur colours and cream markings, same proportions (large head, tiny paws, big fluffy tail). Soft cel-shading with gentle gradients, clean warm-brown outline of uniform thickness (about 3 px at 384 px), warm pastel palette, no realistic fur texture, no photorealism. Background: flat solid pure green #00FF00 only, no floor, no ground shadow, no gradient, no text, no watermark. One single character, centred, entire body visible with at least 8% empty margin on every side. No green anywhere on the character. No props unless the pose says so.",
+  "negative_list": ["realistic dog","photo","3D render","different breed","different eye colour","extra limbs","text","watermark","ground shadow","green on the character","multiple characters","cropped body"],
+  "symmetry": {
+    "mirror_ok": "UNDECIDED - agent inspects the reference in Phase A and asks the user; if any marking is asymmetric set false and generate *_left variants separately",
+    "note": "Left-facing walk/run is the mirrored strip only when mirror_ok is true"
+  },
+  "camera_refs": {
+    "front": ["approved/master/master_front.png", "approved/master/master_three_quarter.png"],
+    "three_quarter_right": ["approved/master/master_three_quarter.png", "approved/master/master_front.png"],
+    "side_right": ["approved/master/master_side_right.png", "approved/master/master_front.png"]
+  },
+  "max_reference_images_per_call": 3,
+  "reference_image_roles": "Image 1 = identity truth for this camera. Image 2 = secondary identity check. Image 3 (frames after the first) = the previous approved frame of the same animation: keep identical scale, framing and ground position.",
+  "model_sheet_deliverables": [
+    "master_front.png: sitting, front view, neutral smile",
+    "master_three_quarter.png: sitting, three-quarter view facing right",
+    "master_side_right.png: standing, side view facing right",
+    "expressions_sheet.png: 3x3 grid (happy, sad, surprised, sleepy, kiss, eyes-closed bliss, tongue-out, scared, curious)"
+  ],
+  "fx_are_code_drawn": ["hearts","Zzz","sparkles","exclamation mark","question mark","sweat drop","dizzy stars","dust puffs","speech bubbles","ground shadow"],
+  "colour_tokens_source": "assets/spec/palette.json (derived by tools/extract_palette.py from the approved master_front.png; do not invent colours)"
+}

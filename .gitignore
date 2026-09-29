@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Build outputs
+dist/
+dist-ssr/
+target/
+src-tauri/target/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Asset candidate staging and model sheet working files
+assets/raw/_candidates/
+assets/raw/_model_sheet/
+*.bak
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/

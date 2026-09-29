@@ -1,0 +1,849 @@
+{
+  "$schema_version": 1,
+  "canvas_px": 384,
+  "baseline_y_px": 356,
+  "center_x_px": 192,
+  "display_size_logical_px": 192,
+  "window_size_logical_px": 256,
+  "cameras": [
+    "front",
+    "three_quarter_right",
+    "side_right"
+  ],
+  "animations": [
+    {
+      "name": "idle_sit",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 6,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {
+        "0": 1400,
+        "1": 700,
+        "2": 500,
+        "3": 70,
+        "4": 90,
+        "5": 900
+      },
+      "notes": "Frame 0 is the canonical neutral pose. Every sitting animation must start from this exact pose.",
+      "frame_descriptions": [
+        "sitting upright facing the camera, calm happy closed-mouth smile, eyes open, ears relaxed, tail curled resting on the ground beside the body",
+        "same sitting pose, chest slightly raised (inhale), head about 3% higher, eyes open",
+        "same as neutral sitting pose but tail tip flicked upward and one ear slightly twitched",
+        "same as neutral sitting pose with eyes half closed (mid blink)",
+        "same as neutral sitting pose with eyes fully closed as happy curved arcs (blink)",
+        "same as neutral sitting pose, eyes open, head tilted a tiny bit toward the viewer's right"
+      ]
+    },
+    {
+      "name": "look_left",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 1,
+      "fps": 1,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Single-frame head-look pose. look_center is idle_sit frame 0.",
+      "frame_descriptions": [
+        "identical to idle_sit frame 0 (sitting upright facing camera, neutral smile) but head and eyes turned toward viewer's left, pupils shifted toward viewer's left; body, legs and tail unchanged"
+      ]
+    },
+    {
+      "name": "look_right",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 1,
+      "fps": 1,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Single-frame head-look pose. look_center is idle_sit frame 0.",
+      "frame_descriptions": [
+        "identical to idle_sit frame 0 (sitting upright facing camera, neutral smile) but head and eyes turned toward viewer's right, pupils shifted toward viewer's right; body, legs and tail unchanged"
+      ]
+    },
+    {
+      "name": "look_up",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": false,
+      "frames": 1,
+      "fps": 1,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Single-frame head-look pose. look_center is idle_sit frame 0.",
+      "frame_descriptions": [
+        "identical to idle_sit frame 0 (sitting upright facing camera, neutral smile) but head and eyes turned toward up, pupils shifted toward up; body, legs and tail unchanged"
+      ]
+    },
+    {
+      "name": "look_down",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": false,
+      "frames": 1,
+      "fps": 1,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Single-frame head-look pose. look_center is idle_sit frame 0.",
+      "frame_descriptions": [
+        "identical to idle_sit frame 0 (sitting upright facing camera, neutral smile) but head and eyes turned toward down, pupils shifted toward down; body, legs and tail unchanged"
+      ]
+    },
+    {
+      "name": "stand_idle",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 2,
+      "fps": 3,
+      "loop": true,
+      "target_height_px": 260,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "standing on all four paws, side view facing right, head up, neutral smile, tail up in a soft curve",
+        "same standing pose, body 2% lower (exhale), tail tip slightly lower"
+      ]
+    },
+    {
+      "name": "sit_down",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 260,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "standing side view facing right, about to sit",
+        "hind legs folded, rear lowering toward the ground, front legs straight",
+        "sitting upright side view facing right, tail curled behind"
+      ]
+    },
+    {
+      "name": "stand_up",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 260,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright side view facing right",
+        "rear lifting, hind legs unfolding, front legs straight",
+        "standing on all four paws side view facing right"
+      ]
+    },
+    {
+      "name": "walk",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 10,
+      "loop": true,
+      "target_height_px": 250,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Side view facing right; left-facing is the mirrored strip. Must loop seamlessly frame 5 -> 0.",
+      "frame_descriptions": [
+        "walk cycle contact pose A: front right paw forward, back left paw back, head level, tail up",
+        "walk cycle down pose A: body at lowest point, weight on front right and back left paws, ears bouncing slightly",
+        "walk cycle passing pose A: legs passing under body, body at highest point",
+        "walk cycle contact pose B: front left paw forward, back right paw back (mirror of A)",
+        "walk cycle down pose B: body at lowest point, weight on front left and back right paws",
+        "walk cycle passing pose B: legs passing under body, body at highest point"
+      ]
+    },
+    {
+      "name": "run",
+      "category": "core",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 14,
+      "loop": true,
+      "target_height_px": 240,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "Loops seamlessly. Body height changes are intentional; preserve motion.",
+      "frame_descriptions": [
+        "gallop extension: all four legs stretched out front and back, body elongated, ears flying back, happy open mouth",
+        "gallop transition: legs beginning to gather, body lowering",
+        "gallop gather: all four paws tucked under the body, back arched, ears up",
+        "gallop transition: front legs reaching forward, hind legs pushing off",
+        "gallop airborne: body fully off the ground, legs extended, tail streaming",
+        "gallop landing: front paws touching down, body compressing"
+      ]
+    },
+    {
+      "name": "happy",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 8,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, big open smile with tiny tongue, eyes sparkling, tail wagging to viewer's left",
+        "tiny hop: whole body 8% higher off the ground, ears bouncing up, eyes happy arcs",
+        "landing squash: body slightly wider and shorter, cheeks puffed, big smile",
+        "sitting upright facing the camera, big open smile, tail wagging to viewer's right"
+      ]
+    },
+    {
+      "name": "excited",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 12,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "crouched slightly, ready to jump, eyes wide and shiny, big open smile",
+        "jumping up, front paws raised, body stretched, ears up",
+        "peak of jump, all paws off the ground, huge smile",
+        "coming down, paws lowering, ears floating up",
+        "landing squash, body wide and short, tongue out",
+        "recovering to upright sitting pose, happy wiggle"
+      ]
+    },
+    {
+      "name": "petting",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 8,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, eyes closed as happy curved arcs, soft blush on cheeks, blissful smile, head pushed slightly upward",
+        "same, head tilted toward viewer's left, ears pressed back slightly",
+        "same as first frame, body slightly lower and squished (relaxed)",
+        "same, head tilted toward viewer's right, ears pressed back slightly"
+      ]
+    },
+    {
+      "name": "kiss",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "Hearts are NOT drawn by the model; hearts are code-drawn particles.",
+      "frame_descriptions": [
+        "sitting upright facing the camera, neutral smile",
+        "leaning forward toward the camera, head slightly larger, eyes closing",
+        "maximum lean toward the camera, face large, eyes closed, tiny puckered muzzle or small lick, blush",
+        "holding the lean, eyes closed, blush deepening, smile",
+        "returning back to sitting, eyes open, happy smile"
+      ],
+      "sound_cue": "kiss@2"
+    },
+    {
+      "name": "surprised",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 10,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "eyes wide with tiny pupils, ears shot straight up, small round open mouth, body jumped 6% off the ground",
+        "hold: same wide-eyed expression, body at peak of the hop, all four paws off the ground",
+        "landing, still wide-eyed, ears slowly lowering"
+      ]
+    },
+    {
+      "name": "sad",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 4,
+      "loop": true,
+      "target_height_px": 290,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting, ears drooped down, big glossy eyes looking downward, small frown, tail low on the ground",
+        "same, eyes glossier with a tiny highlight, head 2% lower",
+        "same as first frame, eyes half-lidded"
+      ]
+    },
+    {
+      "name": "curious",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 4,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, head tilted toward viewer's right, one ear raised, big attentive eyes",
+        "head tilted further, both ears perked, eyes bigger",
+        "head tilted back to a slight tilt, held, eyes bright"
+      ]
+    },
+    {
+      "name": "scared",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 6,
+      "loop": true,
+      "target_height_px": 270,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "crouched low, ears flattened back, eyes wide with tiny pupils, tail tucked between legs",
+        "same crouch, body trembling: shifted 2% to viewer's left",
+        "same crouch, body trembling: shifted 2% to viewer's right"
+      ]
+    },
+    {
+      "name": "bored_sigh",
+      "category": "emotion",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 6,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, cheeks puffed with air",
+        "exhaling, cheeks deflating, eyes half-lidded",
+        "chin dropped to chest, eyes half-lidded, ears slightly drooped",
+        "head slowly returning to neutral, eyes half-lidded"
+      ]
+    },
+    {
+      "name": "bark",
+      "category": "action",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 10,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, mouth wide open barking, head tilted upward a little, ears up",
+        "mouth closing slightly, head snapping forward, body hopping 3%",
+        "sitting upright facing the camera, mouth closed proud smile"
+      ],
+      "sound_cue": "bark@0"
+    },
+    {
+      "name": "yawn",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 6,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, neutral, eyes starting to squint",
+        "mouth opening wide, eyes squeezed shut, head tilting back",
+        "widest yawn, mouth big, tiny tongue curled, eyes shut",
+        "mouth closing, eyes watery and half-open",
+        "back to neutral sitting, one blink"
+      ]
+    },
+    {
+      "name": "scratch_ear",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 290,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting in three-quarter view facing right, neutral",
+        "hind leg lifting toward the ear, head tilting into it",
+        "hind paw at ear, scratching pose A, eyes closed in relief",
+        "hind paw at ear, scratching pose B, ear flopped a bit, eyes closed",
+        "hind paw lowering, eyes opening",
+        "back to neutral three-quarter sitting, ear fluffed"
+      ]
+    },
+    {
+      "name": "stretch",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 6,
+      "loop": false,
+      "target_height_px": 250,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "standing side view facing right",
+        "play-bow start: front legs reaching forward, chest lowering",
+        "full play-bow stretch: chest to the ground, rear up, tail high, eyes closed happily",
+        "coming up, front legs walking back",
+        "standing side view, small body shake, ears flapping"
+      ]
+    },
+    {
+      "name": "sneeze",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 10,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, nose scrunching, eyes squinting",
+        "head tilting back, mouth opening, eyes squeezed shut",
+        "head snapping forward mid-sneeze, mouth open, eyes shut, body pushed back 3%",
+        "head shaking, ears flapping, eyes blinking, sheepish smile"
+      ],
+      "sound_cue": "sneeze@2"
+    },
+    {
+      "name": "roll_over",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 220,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, playful grin",
+        "lying down on its side, cute grin",
+        "rolling onto back, legs in the air",
+        "on its back, paws up, belly visible, tongue out, eyes happy arcs",
+        "rolling back to its belly",
+        "sitting up again, dizzy happy grin"
+      ]
+    },
+    {
+      "name": "paw_reach",
+      "category": "action",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, eyes fixed on something toward viewer's right",
+        "right front paw starting to lift toward viewer's right",
+        "right front paw fully extended toward viewer's right, tiny toe beans visible",
+        "paw retracting, sheepish smile"
+      ]
+    },
+    {
+      "name": "trip",
+      "category": "funny",
+      "priority": "mvp",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 10,
+      "loop": false,
+      "target_height_px": 250,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "running in stride, side view facing right, happy",
+        "front paw catches, body pitching forward, eyes wide",
+        "belly-flop sliding on the ground, face down, ears flopped forward, comic",
+        "sitting up dazed, eyes swirly-simple, head wobbling",
+        "shaking head, recovering, embarrassed smile"
+      ]
+    },
+    {
+      "name": "drag",
+      "category": "action",
+      "priority": "mvp",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 2,
+      "fps": 6,
+      "loop": true,
+      "target_height_px": 290,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "picked up by the scruff, body dangling, four legs hanging, surprised cute eyes, ears drooping, tail hanging",
+        "same dangling pose, body swung slightly to viewer's right, legs swaying"
+      ]
+    },
+    {
+      "name": "sleep_down",
+      "category": "sleep",
+      "priority": "mvp",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 6,
+      "loop": false,
+      "target_height_px": 200,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting three-quarter view facing right, eyelids drooping, sleepy",
+        "head nodding down, eyes almost closed",
+        "lowering to the ground, front legs sliding forward",
+        "curled up lying down, nose tucked toward tail, eyes closed"
+      ]
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "priority": "mvp",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 2,
+      "loop": true,
+      "target_height_px": 190,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "Zzz letters are code-drawn, not generated.",
+      "frame_descriptions": [
+        "curled up asleep, eyes closed, peaceful smile, body relaxed, nose on paws",
+        "same, body slightly inflated (inhale)",
+        "same as first frame, one ear twitching",
+        "same, body slightly deflated (exhale)"
+      ]
+    },
+    {
+      "name": "wake_up",
+      "category": "sleep",
+      "priority": "mvp",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 6,
+      "loop": false,
+      "target_height_px": 230,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "curled up, eyes opening slowly",
+        "head lifting, front legs pushing up, sleepy eyes",
+        "sitting three-quarter view facing right, small yawn-smile, eyes open"
+      ]
+    },
+    {
+      "name": "dance",
+      "category": "funny",
+      "priority": "v2",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 6,
+      "fps": 10,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "standing on hind legs, front paws up, leaning left, happy",
+        "standing on hind legs, front paws up, upright, tongue out",
+        "standing on hind legs, leaning right, happy",
+        "hopping, both paws up, ears flying",
+        "twirl half turn, tail swishing",
+        "landing pose, big smile"
+      ]
+    },
+    {
+      "name": "chase_tail",
+      "category": "funny",
+      "priority": "v2",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "target_height_px": 240,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "spinning: nose pointing right, tail visible on the left, eyes focused",
+        "chasing its own tail, rotation step 1 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 2 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 3 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 4 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 5 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 6 of 7, body curled toward the tail, eyes locked on the tail",
+        "chasing its own tail, rotation step 7 of 7, body curled toward the tail, eyes locked on the tail"
+      ]
+    },
+    {
+      "name": "tv_watch",
+      "category": "tv",
+      "priority": "v2",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 3,
+      "loop": true,
+      "target_height_px": 260,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting seen from behind-right, looking toward the right where a TV is, ears up, tail wagging low",
+        "same, head tilted slightly",
+        "same, ears twitching",
+        "same, leaning forward slightly"
+      ]
+    },
+    {
+      "name": "tv_laugh",
+      "category": "tv",
+      "priority": "v2",
+      "camera": "three_quarter_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 4,
+      "fps": 8,
+      "loop": true,
+      "target_height_px": 260,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting seen from behind-right, mouth visible in profile laughing, shoulders shaking, eyes closed",
+        "same, head thrown back slightly",
+        "same, bouncing",
+        "same, wiping tiny paw at eye"
+      ]
+    },
+    {
+      "name": "hungry",
+      "category": "emotion",
+      "priority": "v2",
+      "camera": "front",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 3,
+      "fps": 4,
+      "loop": true,
+      "target_height_px": 300,
+      "preserve_motion": false,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "sitting upright facing the camera, drooling slightly, big pleading eyes, ears perked",
+        "same, tongue licking lips",
+        "same, tummy rumble body shift, ears drooping"
+      ]
+    },
+    {
+      "name": "bone_sniff",
+      "category": "action",
+      "priority": "v2",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 8,
+      "loop": false,
+      "target_height_px": 240,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "standing side view, nose down sniffing the ground",
+        "walking sniffing, nose to the ground",
+        "stops, ears perk up",
+        "digs with front paws",
+        "stands proudly (bone is a separate prop)"
+      ]
+    },
+    {
+      "name": "ball_pounce",
+      "category": "action",
+      "priority": "v2",
+      "camera": "side_right",
+      "facing": "right",
+      "mirrorable": true,
+      "frames": 5,
+      "fps": 10,
+      "loop": false,
+      "target_height_px": 240,
+      "preserve_motion": true,
+      "frame_ms": {},
+      "notes": "",
+      "frame_descriptions": [
+        "crouched play-bow, eyes locked forward, rear wiggling",
+        "springing forward",
+        "airborne pounce, front paws extended",
+        "landing, paws down",
+        "sitting proudly, tongue out"
+      ]
+    }
+  ],
+  "props": [
+    {
+      "name": "ball",
+      "priority": "v2",
+      "size_px": 96,
+      "prompt": "a small round red-and-cream toy ball with a soft outline, same cartoon style"
+    },
+    {
+      "name": "bone",
+      "priority": "v2",
+      "size_px": 96,
+      "prompt": "a cream chew-toy bone with a soft outline, same cartoon style"
+    },
+    {
+      "name": "tv",
+      "priority": "v2",
+      "size_px": 256,
+      "prompt": "a tiny retro cartoon TV set with rounded corners, screen filled with solid pure magenta #FF00FF (screen area will be replaced by code), cream body, stubby legs",
+      "screen_key_color": "#FF00FF"
+    },
+    {
+      "name": "bed",
+      "priority": "v2",
+      "size_px": 256,
+      "prompt": "a round fluffy pastel pet bed viewed from three-quarter angle, empty"
+    }
+  ]
+}

@@ -1,0 +1,1639 @@
+{
+  "version": 1,
+  "canvas": 384,
+  "baseline": 356,
+  "centerX": 192,
+  "display": 192,
+  "window": 256,
+  "feetYLogical": 242,
+  "specSha256": "ff0d7766e986d30b7b5621f5c985f570b02b586afccfcb71ad76f25337e10ecf",
+  "animations": {
+    "idle_sit": {
+      "strip": "sprites/idle_sit.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": true,
+      "frameMs": [
+        1400,
+        700,
+        500,
+        70,
+        90,
+        900
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "look_left": {
+      "strip": "sprites/look_left.png",
+      "frames": 1,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 1,
+      "loop": false,
+      "frameMs": [
+        1000
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "look_right": {
+      "strip": "sprites/look_right.png",
+      "frames": 1,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 1,
+      "loop": false,
+      "frameMs": [
+        1000
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "look_up": {
+      "strip": "sprites/look_up.png",
+      "frames": 1,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 1,
+      "loop": false,
+      "frameMs": [
+        1000
+      ],
+      "camera": "front",
+      "mirrorable": false,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "look_down": {
+      "strip": "sprites/look_down.png",
+      "frames": 1,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 1,
+      "loop": false,
+      "frameMs": [
+        1000
+      ],
+      "camera": "front",
+      "mirrorable": false,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "stand_idle": {
+      "strip": "sprites/stand_idle.png",
+      "frames": 2,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 3,
+      "loop": true,
+      "frameMs": [
+        333,
+        333
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "sit_down": {
+      "strip": "sprites/sit_down.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "stand_up": {
+      "strip": "sprites/stand_up.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "walk": {
+      "strip": "sprites/walk.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": true,
+      "frameMs": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "run": {
+      "strip": "sprites/run.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 14,
+      "loop": true,
+      "frameMs": [
+        71,
+        71,
+        71,
+        71,
+        71,
+        71
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "happy": {
+      "strip": "sprites/happy.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": true,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "excited": {
+      "strip": "sprites/excited.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 12,
+      "loop": true,
+      "frameMs": [
+        83,
+        83,
+        83,
+        83,
+        83,
+        83
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "petting": {
+      "strip": "sprites/petting.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": true,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "kiss": {
+      "strip": "sprites/kiss.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "surprised": {
+      "strip": "sprites/surprised.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": false,
+      "frameMs": [
+        100,
+        100,
+        100
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "sad": {
+      "strip": "sprites/sad.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 4,
+      "loop": true,
+      "frameMs": [
+        250,
+        250,
+        250
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "curious": {
+      "strip": "sprites/curious.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 4,
+      "loop": false,
+      "frameMs": [
+        250,
+        250,
+        250
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "scared": {
+      "strip": "sprites/scared.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": true,
+      "frameMs": [
+        167,
+        167,
+        167
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "bored_sigh": {
+      "strip": "sprites/bored_sigh.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": false,
+      "frameMs": [
+        167,
+        167,
+        167,
+        167
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "bark": {
+      "strip": "sprites/bark.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": false,
+      "frameMs": [
+        100,
+        100,
+        100
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "yawn": {
+      "strip": "sprites/yawn.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": false,
+      "frameMs": [
+        167,
+        167,
+        167,
+        167,
+        167
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "scratch_ear": {
+      "strip": "sprites/scratch_ear.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "stretch": {
+      "strip": "sprites/stretch.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": false,
+      "frameMs": [
+        167,
+        167,
+        167,
+        167,
+        167
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "sneeze": {
+      "strip": "sprites/sneeze.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": false,
+      "frameMs": [
+        100,
+        100,
+        100,
+        100
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "roll_over": {
+      "strip": "sprites/roll_over.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "paw_reach": {
+      "strip": "sprites/paw_reach.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "trip": {
+      "strip": "sprites/trip.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": false,
+      "frameMs": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "drag": {
+      "strip": "sprites/drag.png",
+      "frames": 2,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": true,
+      "frameMs": [
+        167,
+        167
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "sleep_down": {
+      "strip": "sprites/sleep_down.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": false,
+      "frameMs": [
+        167,
+        167,
+        167,
+        167
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "sleep_loop": {
+      "strip": "sprites/sleep_loop.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 2,
+      "loop": true,
+      "frameMs": [
+        500,
+        500,
+        500,
+        500
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "wake_up": {
+      "strip": "sprites/wake_up.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 6,
+      "loop": false,
+      "frameMs": [
+        167,
+        167,
+        167
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "dance": {
+      "strip": "sprites/dance.png",
+      "frames": 6,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": true,
+      "frameMs": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "chase_tail": {
+      "strip": "sprites/chase_tail.png",
+      "frames": 8,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 12,
+      "loop": true,
+      "frameMs": [
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "tv_watch": {
+      "strip": "sprites/tv_watch.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 3,
+      "loop": true,
+      "frameMs": [
+        333,
+        333,
+        333,
+        333
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "tv_laugh": {
+      "strip": "sprites/tv_laugh.png",
+      "frames": 4,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": true,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "three_quarter_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "hungry": {
+      "strip": "sprites/hungry.png",
+      "frames": 3,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 4,
+      "loop": true,
+      "frameMs": [
+        250,
+        250,
+        250
+      ],
+      "camera": "front",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "bone_sniff": {
+      "strip": "sprites/bone_sniff.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 8,
+      "loop": false,
+      "frameMs": [
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    },
+    "ball_pounce": {
+      "strip": "sprites/ball_pounce.png",
+      "frames": 5,
+      "frameWidth": 384,
+      "frameHeight": 384,
+      "fps": 10,
+      "loop": false,
+      "frameMs": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "camera": "side_right",
+      "mirrorable": true,
+      "bbox": [
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ],
+        [
+          48,
+          56,
+          288,
+          300
+        ]
+      ],
+      "soundCue": null
+    }
+  }
+}

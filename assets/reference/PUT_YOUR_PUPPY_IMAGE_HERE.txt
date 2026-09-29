@@ -1,0 +1,6 @@
+Save your golden/cream chibi puppy reference image in this folder as:
+
+    master_reference.png
+
+(at least 512 px on the short side; a clean, front-facing or 3/4 view on any plain background works best).
+The agent must stop and ask if this file is missing.

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "source": "assets/reference/master_reference.png",
+  "method": "quantile-clustering",
+  "tokens": {
+    "--pup-fur-base": "#F4CB96",
+    "--pup-fur-light": "#FAEDBF",
+    "--pup-fur-shadow": "#D79676",
+    "--pup-ear": "#D79676",
+    "--pup-outline": "#5F1100",
+    "--pup-nose": "#562927",
+    "--pup-eye": "#3E5C76",
+    "--pup-blush": "#F4A8A0",
+    "--fx-heart": "#FF7A93",
+    "--fx-heart-light": "#FFC2CF",
+    "--fx-zzz": "#8FA8E8",
+    "--fx-spark": "#FFE9A8",
+    "--bubble-bg": "#FFFDF7",
+    "--bubble-text": "#5A3B27",
+    "--shadow": "rgba(90,59,39,0.18)"
+  }
+}

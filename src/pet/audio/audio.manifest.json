@@ -1,0 +1,12 @@
+{
+  "bark": { "cooldownMs": 4000, "volume": 0.8 },
+  "yip": { "cooldownMs": 3000, "volume": 0.7 },
+  "happy": { "cooldownMs": 6000, "volume": 0.7 },
+  "purr": { "cooldownMs": 5000, "volume": 0.6 },
+  "kiss": { "cooldownMs": 2000, "volume": 0.8 },
+  "sneeze": { "cooldownMs": 6000, "volume": 0.7 },
+  "yawn": { "cooldownMs": 8000, "volume": 0.6 },
+  "whimper": { "cooldownMs": 10000, "volume": 0.5 },
+  "pop": { "cooldownMs": 200, "volume": 0.6 },
+  "thud": { "cooldownMs": 500, "volume": 0.9 }
+}
